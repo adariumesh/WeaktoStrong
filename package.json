@@ -4,11 +4,25 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=web",
+    "dev:backend": "cd backend && uvicorn main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:full": "concurrently \"npm run dev:backend\" \"npm run dev:web\"",
     "lint": "turbo run lint",
+    "lint:backend": "cd backend && ruff check .",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "format:backend": "cd backend && black .",
+    "check-types": "turbo run check-types",
+    "test": "turbo run test",
+    "test:backend": "cd backend && pytest",
+    "install:backend": "cd backend && pip install -r requirements.txt",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
+    "concurrently": "^8.2.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.7.4",
     "turbo": "^2.7.0",
     "typescript": "5.9.2"
@@ -20,5 +34,9 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "next-auth": "^4.24.13",
+    "zod": "^4.2.1"
+  }
 }

@@ -1,135 +1,256 @@
-# Turborepo starter
+# Weak-to-Strong: AI Supervision Training Platform
 
-This Turborepo starter is maintained by the Turborepo core team.
+> **Phase 1 Complete! ✅** Authentication system with NextAuth + FastAPI is fully operational.
 
-## Using this example
+Train AI supervisors, not AI consumers. Learn to supervise AI effectively through hands-on challenges, precision prompting, and verification techniques.
 
-Run the following command:
+## 🚀 **Current Status: Phase 1 Complete**
 
-```sh
-npx create-turbo@latest
-```
+**✅ Phase 0: Project Bootstrap**
 
-## What's inside?
+- Turborepo monorepo with Next.js 14 + FastAPI
+- Docker Compose for local development
+- CI/CD with GitHub Actions + Husky pre-commit hooks
 
-This Turborepo includes the following packages/apps:
+**✅ Phase 1: Authentication System**
 
-### Apps and Packages
+- Complete NextAuth integration (GitHub OAuth + email/password)
+- FastAPI JWT-based API with rate limiting
+- Protected routes with session handling
+- User registration, login, logout, token refresh
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## 🏗️ **Architecture**
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+┌─────────────────────────────────────────────────────┐
+│ FRONTEND: Next.js 14 + NextAuth + Tailwind         │
+│ ├─ GitHub OAuth + Email/Password Auth              │
+│ ├─ Protected routes with middleware                │
+│ └─ JWT session handling                             │
+├─────────────────────────────────────────────────────┤
+│ BACKEND: FastAPI + SQLAlchemy + PostgreSQL          │
+│ ├─ JWT authentication with refresh tokens          │
+│ ├─ Rate limiting (100 req/hr free tier)            │
+│ ├─ Async database operations                       │
+│ └─ RESTful API with OpenAPI docs                   │
+├─────────────────────────────────────────────────────┤
+│ DATABASE: PostgreSQL + Redis                       │
+│ ├─ User management with OAuth linking              │
+│ ├─ Session storage and caching                     │
+│ └─ Alembic migrations                               │
+└─────────────────────────────────────────────────────┘
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## 🛠️ **Quick Start**
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+### Prerequisites
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+- Node.js 18+ and Python 3.11+
+- PostgreSQL and Redis (or use Docker)
+- GitHub OAuth app configured
 
-### Develop
+### 1. Install Dependencies
 
-To develop all apps and packages, run the following command:
+```bash
+# Root dependencies
+npm install
 
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+# Backend dependencies
+cd backend
+python -m pip install -r requirements.txt
+cd ..
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+### 2. Environment Setup
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+```bash
+# Frontend (.env.local)
+cp apps/web/.env.local.example apps/web/.env.local
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+# Backend (.env)
+cp backend/.env.example backend/.env
 ```
 
-### Remote Caching
+### 3. Start Services
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+```bash
+# Option A: Docker (recommended)
+docker-compose up -d postgres redis
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+# Option B: Local PostgreSQL & Redis
+# (configure connection strings in .env files)
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### 4. Database Setup
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+```bash
+cd backend
+alembic upgrade head
+cd ..
 ```
 
-## Useful Links
+### 5. Development Servers
 
-Learn more about the power of Turborepo:
+```bash
+# Start both frontend and backend
+npm run dev
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+# Or individually:
+npm run dev:web      # Frontend: http://localhost:3000
+npm run dev:backend  # Backend: http://localhost:8000
+```
+
+## 🔐 **Authentication Flow**
+
+### **GitHub OAuth (Working)**
+
+- ✅ OAuth app configured: `Ov23ligZpEMxoOjbXjof`
+- ✅ Callback URL: `http://localhost:3000/api/auth/callback/github`
+- ✅ Auto-linking to existing accounts by email
+
+### **Email/Password (Working)**
+
+- ✅ bcrypt password hashing
+- ✅ Email validation with Pydantic
+- ✅ Account verification flow ready
+
+### **JWT Tokens**
+
+- ✅ 15-minute access tokens
+- ✅ 7-day refresh tokens
+- ✅ Automatic token refresh in NextAuth
+- ✅ Rate limiting: 100 requests/hour (free tier)
+
+## 📊 **API Endpoints (Ready)**
+
+### Authentication
+
+- `POST /api/v1/auth/register` - User registration
+- `POST /api/v1/auth/login` - Email/password login
+- `POST /api/v1/auth/refresh` - Token refresh
+- `POST /api/v1/auth/logout` - User logout
+- `GET /api/v1/auth/me` - Current user info
+- `POST /api/v1/auth/oauth/github` - GitHub OAuth handler
+
+### Health & Info
+
+- `GET /` - API status
+- `GET /health` - Health check
+- `GET /docs` - OpenAPI documentation
+
+## 🧪 **Testing**
+
+```bash
+# Test backend auth utilities
+cd backend
+python test_auth_endpoints.py
+
+# Test API endpoints
+python -c "from fastapi.testclient import TestClient; from main import app; print(TestClient(app).get('/health').json())"
+
+# Test frontend build
+npm run build
+
+# Run linting
+npm run lint              # Frontend
+cd backend && ruff check . # Backend
+```
+
+## 📁 **Project Structure**
+
+```
+weak-to-strong/
+├── apps/web/                    # Next.js frontend
+│   ├── app/(auth)/             # Auth pages
+│   │   ├── signin/page.tsx     # Login form
+│   │   └── signup/page.tsx     # Registration form
+│   ├── app/dashboard/          # Protected dashboard
+│   ├── lib/auth.ts             # NextAuth configuration
+│   └── middleware.ts           # Route protection
+├── backend/                    # FastAPI backend
+│   ├── app/api/v1/auth.py      # Auth endpoints
+│   ├── app/core/               # Core utilities
+│   │   ├── auth.py             # JWT & password utils
+│   │   ├── database.py         # Database connection
+│   │   └── deps.py             # FastAPI dependencies
+│   ├── app/models/             # SQLAlchemy models
+│   │   ├── user.py             # User model
+│   │   └── session.py          # Session model
+│   ├── app/schemas/            # Pydantic schemas
+│   └── alembic/                # Database migrations
+├── docker-compose.yml          # Local development services
+├── scripts/                    # Setup automation
+└── .github/workflows/          # CI/CD pipeline
+```
+
+## 🎯 **Next Phase: Core UI Layout**
+
+**Phase 2 Goals:**
+
+- Three-panel resizable layout (Challenge | Workspace | Resources)
+- Shadcn/ui component library integration
+- Responsive design with mobile-first approach
+- Dark mode support with theme persistence
+
+## 🔧 **Development Commands**
+
+```bash
+# Start everything
+npm run dev               # Both servers + watch mode
+npm run dev:web          # Frontend only (port 3000)
+npm run dev:backend      # Backend only (port 8000)
+
+# Building & Testing
+npm run build            # Build all packages
+npm run lint             # Lint all code
+npm run typecheck        # TypeScript checking
+
+# Backend specific
+cd backend
+python test_auth_endpoints.py  # Test auth utilities
+uvicorn main:app --reload      # Start backend manually
+alembic revision --autogenerate -m "description"  # New migration
+alembic upgrade head           # Apply migrations
+
+# Database
+docker-compose up -d postgres redis  # Start services
+docker-compose down               # Stop services
+```
+
+## 📝 **Environment Variables**
+
+### Frontend (apps/web/.env.local)
+
+```bash
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-secret-here
+GITHUB_ID=Ov23ligZpEMxoOjbXjof
+GITHUB_SECRET=505e9d69ab3d0abae46b9f02ac15c09a7a03ec2d
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+### Backend (backend/.env)
+
+```bash
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/weaktostrong
+REDIS_URL=redis://localhost:6379
+JWT_SECRET=your-jwt-secret-here
+JWT_ACCESS_EXPIRE_MINUTES=15
+JWT_REFRESH_EXPIRE_DAYS=7
+GITHUB_ID=Ov23ligZpEMxoOjbXjof
+GITHUB_SECRET=505e9d69ab3d0abae46b9f02ac15c09a7a03ec2d
+```
+
+## 📚 **Additional Documentation**
+
+- `CLAUDE_MEMORY.md` - Architecture & technical specifications
+- `DEVELOPMENT_PLAN.md` - 9-phase systematic development plan
+- `ENV_TEMPLATE.md` - Complete environment variable guide
+- `AI_PROMPTS.md` - System prompts for AI features
+- `CHALLENGE_CONTENT.md` - Challenge specifications
+
+---
+
+**🎉 Ready to test the complete authentication flow!**
+
+Visit `http://localhost:3000` after running `npm run dev` to test GitHub OAuth and email registration.

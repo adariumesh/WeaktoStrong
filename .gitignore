@@ -1,38 +1,97 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # Dependencies
-node_modules
-.pnp
-.pnp.js
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
 
-# Local env files
+# Build outputs
+.next/
+dist/
+build/
+*.tsbuildinfo
+.turbo/
+
+# Environment variables
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+backend/.env
 
-# Testing
-coverage
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# Turbo
-.turbo
+# OS
+.DS_Store
+Thumbs.db
 
-# Vercel
-.vercel
-
-# Build Outputs
-.next/
-out/
-build
-dist
-
-
-# Debug
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Misc
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Python
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+venv/
+env/
+
+# Docker
+.dockerignore
+
+# Local development
+*.local
+
+# MacOS
 .DS_Store
-*.pem
