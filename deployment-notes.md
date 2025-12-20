@@ -10,39 +10,29 @@
 | `GITHUB_SECRET`       | `505e9d69ab3d0abae46b9f02ac15c09a7a03ec2d`     | ✅ Final | GitHub OAuth App Secret             |
 | `NEXT_PUBLIC_API_URL` | `http://localhost:8000`                        | ⚠️ TEMP  | **UPDATE after Railway deployment** |
 
-## 🔄 Required Updates After Deployment
+## 🔄 DEPLOYMENT STATUS: FRONTEND DEPLOYED, NEEDS FINAL CONFIG
 
-### 1. After Vercel Frontend Deploys:
+**Frontend URL:** https://weaktostrong-4w2lohlrg-umesh-adaris-projects.vercel.app
 
-```bash
-# Get the actual Vercel URL from deployment and update:
-vercel env rm NEXTAUTH_URL production
-vercel env add NEXTAUTH_URL production
-# Enter: https://weaktostrong-ACTUAL-URL.vercel.app
-```
+### ⚠️ Remaining Deployment Steps:
 
-### 2. After Railway Backend Deploys:
+1. **Update Vercel Environment Variables:**
+   - Change `NEXTAUTH_URL` to: `https://weaktostrong-4w2lohlrg-umesh-adaris-projects.vercel.app`
 
-```bash
-# Get the actual Railway URL and update:
-vercel env rm NEXT_PUBLIC_API_URL production
-vercel env add NEXT_PUBLIC_API_URL production
-# Enter: https://your-backend.railway.app
-```
+2. **Update GitHub OAuth:**
+   - Go to: https://github.com/settings/applications/2464180
+   - Set callback URL: `https://weaktostrong-4w2lohlrg-umesh-adaris-projects.vercel.app/api/auth/callback/github`
 
-### 3. Update GitHub OAuth App Settings:
+3. **Deploy Railway Backend:**
 
-- Go to https://github.com/settings/applications/2464180
-- Update "Authorization callback URL" to: `https://weaktostrong-ACTUAL-URL.vercel.app/api/auth/callback/github`
+   ```bash
+   cd backend && railway login && railway init && railway add postgresql && railway up
+   ```
 
-## 📋 Next Steps
+4. **Update API URL:**
+   - Set `NEXT_PUBLIC_API_URL` to Railway backend URL
 
-1. ✅ Set Vercel env vars (completed)
-2. 🔄 Deploy frontend with `vercel --prod`
-3. 🔄 Deploy Railway backend
-4. 🔄 Update URLs in env vars
-5. 🔄 Update GitHub OAuth callback URL
-6. ✅ Test end-to-end authentication
+### 🎯 Current Focus: Moving to Phase 2 (Core UI Layout)
 
 ## 🔗 Important URLs
 
