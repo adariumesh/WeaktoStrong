@@ -7,9 +7,9 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.auth import verify_token
-from app.core.database import get_db
-from app.models import User
+from ..models.user import User
+from .auth import verify_token
+from .database import get_db
 
 # Security scheme for JWT tokens
 security = HTTPBearer()
@@ -62,7 +62,7 @@ async def get_current_active_user(
     return current_user
 
 
-def get_optional_current_user(
+async def get_optional_current_user(
     credentials: HTTPAuthorizationCredentials | None = Depends(security),
     db: AsyncSession = Depends(get_db),
 ) -> User | None:
@@ -73,6 +73,6 @@ def get_optional_current_user(
         return None
 
     try:
-        return get_current_user(credentials, db)
+        return await get_current_user(credentials, db)
     except HTTPException:
         return None

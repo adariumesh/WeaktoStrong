@@ -1,8 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-export function middleware(request: NextRequest) {
-  // For now, let's not enforce authentication in middleware
-  // We'll handle it in individual pages
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Public routes that don't require authentication
+  const publicRoutes = ["/", "/auth/signin", "/auth/signup"];
+
+  if (publicRoutes.includes(pathname)) {
+    return NextResponse.next();
+  }
+
+  // Check for authentication token
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  if (!token) {
+    // Redirect to sign-in page with callback URL
+    const signInUrl = new URL("/auth/signin", request.url);
+    signInUrl.searchParams.set("callbackUrl", request.url);
+    return NextResponse.redirect(signInUrl);
+  }
+
   return NextResponse.next();
 }
 

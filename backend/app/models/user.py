@@ -8,11 +8,9 @@ from enum import Enum
 
 from sqlalchemy import Boolean, DateTime, Integer, String, Text, func
 from sqlalchemy.dialects.postgresql import ENUM, UUID
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-
-class Base(DeclarativeBase):
-    pass
+from .base import Base
 
 
 class UserTier(str, Enum):
@@ -63,5 +61,55 @@ class User(Base):
     )
     last_login: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
 
+    # AI-related relationships
+    conversations = relationship(
+        "Conversation", back_populates="user", cascade="all, delete-orphan"
+    )
+    token_usage = relationship(
+        "TokenUsage", back_populates="user", cascade="all, delete-orphan"
+    )
+
+    # Challenge-related relationships
+    submissions = relationship(
+        "Submission", back_populates="user", cascade="all, delete-orphan"
+    )
+    progress = relationship(
+        "UserProgress",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan",
+    )
+    certificates = relationship(
+        "Certificate", back_populates="user", cascade="all, delete-orphan"
+    )
+
+    # Payment-related relationships
+    subscription = relationship(
+        "Subscription",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan",
+    )
+    payments = relationship(
+        "Payment", back_populates="user", cascade="all, delete-orphan"
+    )
+
     def __repr__(self) -> str:
         return f"<User(id={self.id}, email='{self.email}', tier='{self.tier.value}')>"
+
+    @property
+    def subscription_tier(self) -> str:
+        """Get subscription tier as string for AI routing"""
+        return self.tier.value
+
+    async def get_daily_token_usage(self, db_session, target_date=None) -> dict:
+        """Get AI token usage for a specific date"""
+        from .token_usage import TokenUsage
+
+        return await TokenUsage.get_daily_usage(db_session, str(self.id), target_date)
+
+    async def add_token_usage(self, db_session, model: str, tokens: int):
+        """Add token usage for this user"""
+        from .token_usage import TokenUsage
+
+        await TokenUsage.add_usage(db_session, str(self.id), model, tokens)

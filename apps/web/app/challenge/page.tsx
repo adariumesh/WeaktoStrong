@@ -7,7 +7,7 @@ export default function ChallengePage() {
   return (
     <main>
       <ThreePanelLayout
-        challenge={<ChallengePanel />}
+        challenge={<ChallengePanel challengeId="web-001" />}
         workspace={<WorkspacePanel />}
         resources={<ResourcesPanel />}
       />

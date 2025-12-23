@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { Panel, Group, Separator } from "react-resizable-panels";
 import { GripVertical, BookOpen, Code, FileText, Menu, X } from "lucide-react";
 
 interface ThreePanelLayoutProps {
@@ -74,7 +74,7 @@ export function ThreePanelLayout({
   // Desktop View: Resizable panels
   const DesktopView = () => (
     <div className="hidden md:flex h-screen">
-      <PanelGroup direction="horizontal" className="w-full">
+      <Group className="w-full">
         {/* Challenge Panel */}
         <Panel defaultSize={25} minSize={20} maxSize={40}>
           <div className="h-full flex flex-col border-r bg-gray-50">
@@ -87,12 +87,12 @@ export function ThreePanelLayout({
         </Panel>
 
         {/* Resize Handle */}
-        <PanelResizeHandle className="w-2 bg-gray-200 hover:bg-gray-300 transition-colors flex items-center justify-center group">
+        <Separator className="w-2 bg-gray-200 hover:bg-gray-300 transition-colors flex items-center justify-center group">
           <GripVertical
             size={16}
             className="text-gray-400 group-hover:text-gray-600 transition-colors"
           />
-        </PanelResizeHandle>
+        </Separator>
 
         {/* Workspace Panel (Main) */}
         <Panel defaultSize={50} minSize={30}>
@@ -106,12 +106,12 @@ export function ThreePanelLayout({
         </Panel>
 
         {/* Resize Handle */}
-        <PanelResizeHandle className="w-2 bg-gray-200 hover:bg-gray-300 transition-colors flex items-center justify-center group">
+        <Separator className="w-2 bg-gray-200 hover:bg-gray-300 transition-colors flex items-center justify-center group">
           <GripVertical
             size={16}
             className="text-gray-400 group-hover:text-gray-600 transition-colors"
           />
-        </PanelResizeHandle>
+        </Separator>
 
         {/* Resources Panel */}
         <Panel defaultSize={25} minSize={15} maxSize={35}>
@@ -123,7 +123,7 @@ export function ThreePanelLayout({
             <div className="flex-1 overflow-auto p-4">{resources}</div>
           </div>
         </Panel>
-      </PanelGroup>
+      </Group>
     </div>
   );
 

@@ -2,6 +2,7 @@ import { AuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
+import { GitHubProfile, ExtendedUser, AuthToken } from "./types/auth";
 
 interface User {
   id: string;
@@ -134,10 +135,10 @@ export const authOptions: AuthOptions = {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                github_id: (profile as any)?.id,
-                email: (profile as any)?.email,
-                name: (profile as any)?.name,
-                avatar_url: (profile as any)?.avatar_url,
+                github_id: (profile as GitHubProfile)?.id,
+                email: (profile as GitHubProfile)?.email,
+                name: (profile as GitHubProfile)?.name,
+                avatar_url: (profile as GitHubProfile)?.avatar_url,
               }),
             }
           );
@@ -146,9 +147,10 @@ export const authOptions: AuthOptions = {
 
           if (response.ok) {
             // Store tokens for JWT callback
-            (user as any).access_token = data.access_token;
-            (user as any).refresh_token = data.refresh_token;
-            (user as any).user = data.user;
+            const extendedUser = user as ExtendedUser;
+            extendedUser.access_token = data.access_token;
+            extendedUser.refresh_token = data.refresh_token;
+            extendedUser.user = data.user;
             return true;
           }
         } catch (error) {
@@ -159,18 +161,39 @@ export const authOptions: AuthOptions = {
 
       return true;
     },
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account }): Promise<JWT> {
       // Initial sign in
       if (account && user) {
+        const extendedUser = user as ExtendedUser;
         return {
-          access_token: (user as any).access_token,
-          refresh_token: (user as any).refresh_token,
-          user: (user as any).user,
+          ...token,
+          access_token: extendedUser.access_token || "",
+          refresh_token: extendedUser.refresh_token || "",
+          user: extendedUser.user
+            ? {
+                ...extendedUser.user,
+                tier: extendedUser.user.tier || ("free" as const),
+                tokens_used_today: extendedUser.user.tokens_used_today || 0,
+                is_active: extendedUser.user.is_active ?? true,
+                is_verified: extendedUser.user.is_verified ?? false,
+              }
+            : {
+                ...extendedUser,
+                tier: "free" as const,
+                tokens_used_today: 0,
+                is_active: true,
+                is_verified: false,
+              },
         };
       }
 
       // Return previous token if the access token has not expired yet
-      if (Date.now() < (token as any).exp * 1000) {
+      const currentTime = Date.now();
+      const expTimestamp = token.exp;
+      if (
+        typeof expTimestamp === "number" &&
+        currentTime < expTimestamp * 1000
+      ) {
         return token;
       }
 
@@ -178,14 +201,15 @@ export const authOptions: AuthOptions = {
       return refreshAccessToken(token);
     },
     async session({ session, token }) {
-      if ((token as any).error) {
+      if (token.error) {
         // Force sign out if refresh failed
-        (session as any).error = "RefreshAccessTokenError";
+        const extendedSession = session as any;
+        extendedSession.error = "RefreshAccessTokenError";
         return session;
       }
 
       session.user = {
-        ...(token.user as any),
+        ...(token.user || token),
         access_token: token.access_token,
       };
 
