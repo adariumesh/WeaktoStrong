@@ -1,309 +1,255 @@
-# Weak-to-Strong: AI Supervision Training Platform
+# WeaktoStrong: AI Supervision Training Platform
 
-> **Phases 8 & 9 Complete! 🎉** Full multi-track platform with Web, Data Science, and Cloud Infrastructure learning paths.
+> **Current Status**: 🚧 **Foundation Complete - Integration Required (4-6 weeks to launch)**
 
 Train AI supervisors, not AI consumers. Learn to supervise AI effectively through hands-on challenges, precision prompting, and verification techniques.
 
-## 🚀 **Current Status: Phases 8 & 9 Complete - Full Multi-Track Platform**
+## 🎯 **Current Status: Foundation Built, Integration Needed**
 
-**✅ Phase 0: Project Bootstrap** - Turborepo monorepo with Next.js 14 + FastAPI
+### ✅ **What's Complete (40% Overall)**
 
-**✅ Phase 1: Authentication System** - NextAuth + FastAPI JWT with OAuth
+- **✅ Code Architecture**: Comprehensive FastAPI + Next.js foundation
+- **✅ Database Models**: All models defined with Alembic migrations
+- **✅ API Endpoints**: Complete REST API with authentication
+- **✅ Frontend Components**: React components and UI library
+- **✅ AI Integration**: Claude + Ollama client implementations
+- **✅ Payment System**: Stripe integration with webhooks
 
-**✅ Phase 2: Core UI Layout** - Three-panel resizable layout with Shadcn/ui
+### 🚧 **What's Needed for Launch**
 
-**✅ Phase 3: Challenge System** - Challenge CRUD, display, and test infrastructure
+- **❌ Environment Setup**: Configure database, Redis, API keys
+- **❌ Service Integration**: Connect external services (Stripe, Claude, GitHub)
+- **❌ Docker Builds**: Build sandbox execution environments
+- **❌ Data Population**: Seed challenges and test content
+- **❌ End-to-End Testing**: Verify complete user flows
+- **❌ Feature Enablement**: Enable disabled features via environment flags
 
-**✅ Phase 4: Sandbox & Test Execution** - Isolated code execution with test results
+**📖 See [HANDOVER.md](./HANDOVER.md) for complete technical setup guide**
 
-**✅ Phase 5: AI Integration** - Local + Cloud AI with anti-blind-prompting system
-
-**✅ Phase 5.5: Production Readiness** - Testing infrastructure, monitoring, and scalability
-
-**✅ Phase 6: Progress & Gamification** - Complete tracking, certificates, and UI
-
-**✅ Phase 7: Payments & Subscriptions** - Complete Stripe integration with billing management
-
-**✅ Phase 8: Data Track** - Complete data science challenges with Jupyter and SQL
-
-**✅ Phase 9: Cloud Track** - Complete cloud infrastructure challenges with AWS/LocalStack
-
-### 🎯 **Latest Completion Highlights:**
-
-**Phase 8 - Data Science Track:**
-
-- **Jupyter Integration**: Complete data science environment with pandas, numpy, scikit-learn
-- **SQL Sandbox**: PostgreSQL integration with comprehensive query challenges
-- **15 Data Challenges**: Data cleaning → SQL mastery → ML modeling → GDPR compliance
-- **Red Team Security**: SQL injection prevention and data privacy challenges
-
-**Phase 9 - Cloud Infrastructure Track:**
-
-- **LocalStack Integration**: Full AWS emulation for cloud development
-- **Infrastructure as Code**: Terraform and CloudFormation deployment challenges
-- **15 Cloud Challenges**: S3 basics → Kubernetes deployment → security assessment
-- **Production Pipelines**: CI/CD, monitoring, and infrastructure security
-
-## 🏗️ **Architecture**
+## 🏗️ **Platform Architecture**
 
 ```
 ┌─────────────────────────────────────────────────────┐
 │ FRONTEND: Next.js 14 + NextAuth + Tailwind         │
-│ ├─ Three-panel resizable layout (Challenge|Work|AI)│
+│ ├─ Three-panel resizable layout                    │
 │ ├─ Multi-track learning interface                  │
-│ └─ Real-time progress and gamification UI          │
+│ └─ Real-time progress tracking                     │
 ├─────────────────────────────────────────────────────┤
 │ BACKEND: FastAPI + SQLAlchemy + PostgreSQL          │
-│ ├─ Multi-track challenge system (Web/Data/Cloud)   │
-│ ├─ Progress tracking and certificate generation    │
-│ ├─ Stripe integration for subscriptions            │
-│ └─ AI routing with anti-blind-prompting            │
+│ ├─ Multi-track challenge system                    │
+│ ├─ AI routing with anti-blind-prompting            │
+│ ├─ Progress tracking and certificates              │
+│ └─ Stripe payment integration                      │
 ├─────────────────────────────────────────────────────┤
-│ SANDBOX ENVIRONMENTS:                               │
-│ ├─ Web: Node.js + Playwright + Lighthouse          │
-│ ├─ Data: Python + Jupyter + pandas + SQL           │
-│ └─ Cloud: LocalStack + Terraform + Docker          │
+│ SANDBOX ENVIRONMENTS (Docker-based):               │
+│ ├─ Web: Node.js + Playwright testing              │
+│ ├─ Data: Python + Jupyter + SQL                   │
+│ └─ Cloud: LocalStack + Terraform + AWS            │
 ├─────────────────────────────────────────────────────┤
 │ AI INTEGRATION:                                     │
-│ ├─ Local: Ollama + Llama 3.2 8B                    │
-│ ├─ Cloud: Claude Haiku/Sonnet (tier-based)         │
-│ └─ Anti-blind-prompting enforcement                │
+│ ├─ Local: Ollama (Llama models)                   │
+│ ├─ Cloud: Anthropic Claude (tier-based)           │
+│ └─ Anti-blind-prompting system                    │
 └─────────────────────────────────────────────────────┘
 ```
 
-## 📚 **Learning Tracks (45 Total Challenges)**
+## 📚 **Planned Learning Tracks (45 Total Challenges)**
 
 ### 🌐 **Web Track (15 Challenges)**
 
 - **Beginner**: HTML/CSS fundamentals, responsive design
 - **Intermediate**: JavaScript interactivity, React components
-- **Advanced**: Performance optimization, accessibility, PWAs
-- **Red Team**: XSS prevention, security audits
+- **Advanced**: Performance optimization, accessibility
+- **Security**: XSS prevention, security audits
 
 ### 📊 **Data Track (15 Challenges)**
 
-- **Beginner**: Data cleaning, SQL basics, data validation
-- **Intermediate**: Advanced SQL, aggregations, performance tuning
-- **Advanced**: Statistical analysis, ML modeling, A/B testing
-- **Red Team**: SQL injection prevention, GDPR compliance
+- **Beginner**: Data cleaning, SQL basics
+- **Intermediate**: Advanced SQL, aggregations
+- **Advanced**: ML modeling, statistical analysis
+- **Security**: SQL injection prevention, GDPR compliance
 
 ### ☁️ **Cloud Track (15 Challenges)**
 
 - **Beginner**: S3, Lambda, Docker basics
 - **Intermediate**: VPC, ECS, Infrastructure as Code
-- **Advanced**: Kubernetes, CI/CD, monitoring
-- **Red Team**: Security assessment, infrastructure hardening
+- **Advanced**: Kubernetes, CI/CD pipelines
+- **Security**: Infrastructure security assessment
 
-## 🛠️ **Quick Start**
+## 🚀 **Quick Development Setup**
 
 ### Prerequisites
 
 - Node.js 18+ and Python 3.11+
-- PostgreSQL and Redis (or use Docker)
-- GitHub OAuth app configured
+- PostgreSQL and Redis
+- Docker for sandbox environments
 
 ### 1. Install Dependencies
 
 ```bash
-# Root dependencies
 npm install
-
-# Backend dependencies
-cd backend
-python -m pip install -r requirements.txt
-cd ..
+cd backend && pip install -r requirements.txt
 ```
 
 ### 2. Environment Setup
 
 ```bash
-# Frontend (.env.local)
+# Copy environment templates
+cp .env.example .env
 cp apps/web/.env.local.example apps/web/.env.local
 
-# Backend (.env)
-cp backend/.env.example backend/.env
+# Edit both files with real values (see HANDOVER.md)
 ```
 
-### 3. Start Services
+### 3. Database Setup
 
 ```bash
-# Option A: Docker (recommended)
+# Start services
 docker-compose up -d postgres redis
 
-# Option B: Local PostgreSQL & Redis
-# (configure connection strings in .env files)
+# Run migrations
+cd backend && alembic upgrade head
 ```
 
-### 4. Database Setup
+### 4. Start Development
 
 ```bash
-cd backend
-alembic upgrade head
-cd ..
+npm run dev  # Starts both frontend (3000) and backend (8000)
 ```
 
-### 5. Development Servers
+## 🔧 **Critical Setup Steps**
+
+### **Week 1: Basic Setup**
+
+1. Configure PostgreSQL database
+2. Set up Redis for caching
+3. Update environment variables with real values
+4. Verify basic frontend-backend connection
+
+### **Week 2: External Services**
+
+1. Set up GitHub OAuth app
+2. Configure Anthropic Claude API
+3. Set up Stripe account (if payments needed)
+4. Enable feature flags in environment
+
+### **Week 3: Sandbox Environment**
+
+1. Build Docker images for code execution
+2. Test challenge submission and execution
+3. Populate database with challenge content
+4. Verify security isolation
+
+### **Week 4: Integration & Testing**
+
+1. Test complete user journeys
+2. Verify AI chat functionality
+3. Test payment flows (if enabled)
+4. Performance optimization and bug fixes
+
+## 📋 **Environment Variables Required**
+
+### Backend (.env)
 
 ```bash
-# Start both frontend and backend
-npm run dev
-
-# Or individually:
-npm run dev:web      # Frontend: http://localhost:3000
-npm run dev:backend  # Backend: http://localhost:8000
-```
-
-## 🔐 **Authentication Flow**
-
-### **GitHub OAuth (Working)**
-
-- ✅ OAuth app configured: `Ov23ligZpEMxoOjbXjof`
-- ✅ Callback URL: `http://localhost:3000/api/auth/callback/github`
-- ✅ Auto-linking to existing accounts by email
-
-### **Email/Password (Working)**
-
-- ✅ bcrypt password hashing
-- ✅ Email validation with Pydantic
-- ✅ Account verification flow ready
-
-### **JWT Tokens**
-
-- ✅ 15-minute access tokens
-- ✅ 7-day refresh tokens
-- ✅ Automatic token refresh in NextAuth
-- ✅ Rate limiting: 100 requests/hour (free tier)
-
-## 📊 **API Endpoints (Ready)**
-
-### Authentication
-
-- `POST /api/v1/auth/register` - User registration
-- `POST /api/v1/auth/login` - Email/password login
-- `POST /api/v1/auth/refresh` - Token refresh
-- `POST /api/v1/auth/logout` - User logout
-- `GET /api/v1/auth/me` - Current user info
-- `POST /api/v1/auth/oauth/github` - GitHub OAuth handler
-
-### Health & Info
-
-- `GET /` - API status
-- `GET /health` - Health check
-- `GET /docs` - OpenAPI documentation
-
-## 🧪 **Testing**
-
-```bash
-# Test backend auth utilities
-cd backend
-python test_auth_endpoints.py
-
-# Test API endpoints
-python -c "from fastapi.testclient import TestClient; from main import app; print(TestClient(app).get('/health').json())"
-
-# Test frontend build
-npm run build
-
-# Run linting
-npm run lint              # Frontend
-cd backend && ruff check . # Backend
-```
-
-## 📁 **Project Structure**
-
-```
-weak-to-strong/
-├── apps/web/                    # Next.js frontend
-│   ├── app/(auth)/             # Auth pages
-│   │   ├── signin/page.tsx     # Login form
-│   │   └── signup/page.tsx     # Registration form
-│   ├── app/dashboard/          # Protected dashboard
-│   ├── lib/auth.ts             # NextAuth configuration
-│   └── middleware.ts           # Route protection
-├── backend/                    # FastAPI backend
-│   ├── app/api/v1/auth.py      # Auth endpoints
-│   ├── app/core/               # Core utilities
-│   │   ├── auth.py             # JWT & password utils
-│   │   ├── database.py         # Database connection
-│   │   └── deps.py             # FastAPI dependencies
-│   ├── app/models/             # SQLAlchemy models
-│   │   ├── user.py             # User model
-│   │   └── session.py          # Session model
-│   ├── app/schemas/            # Pydantic schemas
-│   └── alembic/                # Database migrations
-├── docker-compose.yml          # Local development services
-├── scripts/                    # Setup automation
-└── .github/workflows/          # CI/CD pipeline
-```
-
-## 🎯 **Next Phase: Core UI Layout**
-
-**Phase 2 Goals:**
-
-- Three-panel resizable layout (Challenge | Workspace | Resources)
-- Shadcn/ui component library integration
-- Responsive design with mobile-first approach
-- Dark mode support with theme persistence
-
-## 🔧 **Development Commands**
-
-```bash
-# Start everything
-npm run dev               # Both servers + watch mode
-npm run dev:web          # Frontend only (port 3000)
-npm run dev:backend      # Backend only (port 8000)
-
-# Building & Testing
-npm run build            # Build all packages
-npm run lint             # Lint all code
-npm run typecheck        # TypeScript checking
-
-# Backend specific
-cd backend
-python test_auth_endpoints.py  # Test auth utilities
-uvicorn main:app --reload      # Start backend manually
-alembic revision --autogenerate -m "description"  # New migration
-alembic upgrade head           # Apply migrations
-
 # Database
-docker-compose up -d postgres redis  # Start services
-docker-compose down               # Stop services
+DATABASE_URL=postgresql+asyncpg://user:pass@host:5432/weaktostrong
+REDIS_URL=redis://localhost:6379
+
+# API Keys (replace placeholders)
+ANTHROPIC_API_KEY=sk-ant-... (real key needed)
+GITHUB_ID=Ov23li... (real OAuth app ID needed)
+GITHUB_SECRET=... (real OAuth secret needed)
+STRIPE_SECRET_KEY=sk_test_... (real Stripe key needed)
+
+# Feature Flags (enable as needed)
+ENABLE_PAYMENTS=true
+ENABLE_CERTIFICATES=true
+ENABLE_DATA_TRACK=false  # Optional
+ENABLE_CLOUD_TRACK=false # Optional
+
+# Security
+JWT_SECRET_KEY=your-secure-random-string
 ```
 
-## 📝 **Environment Variables**
-
-### Frontend (apps/web/.env.local)
+### Frontend (.env.local)
 
 ```bash
 NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your-secret-here
-GITHUB_ID=Ov23ligZpEMxoOjbXjof
-GITHUB_SECRET=505e9d69ab3d0abae46b9f02ac15c09a7a03ec2d
+NEXTAUTH_SECRET=your-secure-random-string
+GITHUB_ID=... (same as backend)
+GITHUB_SECRET=... (same as backend)
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
-### Backend (backend/.env)
+## 🧪 **Testing Commands**
 
 ```bash
-DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/weaktostrong
-REDIS_URL=redis://localhost:6379
-JWT_SECRET=your-jwt-secret-here
-JWT_ACCESS_EXPIRE_MINUTES=15
-JWT_REFRESH_EXPIRE_DAYS=7
-GITHUB_ID=Ov23ligZpEMxoOjbXjof
-GITHUB_SECRET=505e9d69ab3d0abae46b9f02ac15c09a7a03ec2d
+# Backend tests
+cd backend && pytest
+
+# Frontend tests
+cd apps/web && npm test
+
+# Build verification
+npm run build
+
+# Linting
+npm run lint
 ```
 
-## 📚 **Additional Documentation**
+## 🚨 **Known Issues & Quick Fixes**
 
-- `CLAUDE_MEMORY.md` - Architecture & technical specifications
-- `DEVELOPMENT_PLAN.md` - 9-phase systematic development plan
-- `ENV_TEMPLATE.md` - Complete environment variable guide
-- `AI_PROMPTS.md` - System prompts for AI features
-- `CHALLENGE_CONTENT.md` - Challenge specifications
+### Issue 1: Database Connection
+
+- **Problem**: PostgreSQL connection errors
+- **Fix**: Verify PostgreSQL is running and DATABASE_URL is correct
+
+### Issue 2: API Key Errors
+
+- **Problem**: External service 401 errors
+- **Fix**: Replace placeholder API keys with real values
+
+### Issue 3: Docker Image Missing
+
+- **Problem**: "image not found" errors in code execution
+- **Fix**: Build Docker images or update image names in code
+
+### Issue 4: Feature Not Working
+
+- **Problem**: Core features seem broken
+- **Fix**: Check feature flags in .env - many are disabled by default
+
+## 🎯 **Success Criteria**
+
+### **Week 1**: Basic Platform Running
+
+- [ ] Frontend and backend start without errors
+- [ ] Database connection working
+- [ ] User can register and login
+
+### **Week 2**: Core Features Working
+
+- [ ] AI chat responds to user input
+- [ ] Challenge data loads in interface
+- [ ] Basic code submission working
+
+### **Week 4**: Launch Ready
+
+- [ ] Complete user journey functional
+- [ ] All enabled features working
+- [ ] Performance meets targets
+- [ ] Ready for user testing
+
+## 📞 **Next Steps**
+
+1. **Read [HANDOVER.md](./HANDOVER.md)** - Complete technical setup guide
+2. **Set up development environment** - Follow quick setup above
+3. **Configure external services** - Get real API keys and credentials
+4. **Build and test** - Verify each component works independently
+5. **Integration testing** - Test complete user workflows
+6. **Launch preparation** - Performance optimization and monitoring
 
 ---
 
-**🎉 Ready to test the complete authentication flow!**
-
-Visit `http://localhost:3000` after running `npm run dev` to test GitHub OAuth and email registration.
+**This platform has strong technical foundations and excellent market potential. The architecture is production-ready - focus on configuration and integration to bring it to life.** 🚀
