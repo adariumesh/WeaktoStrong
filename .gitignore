@@ -12,11 +12,16 @@ Thumbs.db
 .env.local
 .env.production
 .env.test
+.env.development.local
+.env.test.local
+.env.production.local
+backend/.env
 
 # Dependencies
 node_modules/
 */node_modules/
 **/node_modules/
+jspm_packages/
 
 # Python
 __pycache__/
@@ -32,6 +37,9 @@ venv.bak/
 pip-log.txt
 pip-delete-this-directory.txt
 .pytest_cache/
+*.egg-info/
+.coverage
+htmlcov/
 
 # IDE
 .vscode/
@@ -47,6 +55,8 @@ build/
 dist/
 *.tgz
 *.tar.gz
+*.tsbuildinfo
+.turbo/
 
 # Logs
 logs
@@ -54,6 +64,8 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 # Runtime data
 pids
@@ -74,5 +86,25 @@ coverage/
 # Turbo
 .turbo
 
+# Cache directories
+.npm
+.eslintcache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+.cache
+.parcel-cache
+
+# Optional REPL history
+.node_repl_history
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Docker
+.dockerignore
+
 # Local development
+*.local
 .claude/settings.local.json
