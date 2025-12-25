@@ -1,0 +1,4 @@
+#!/bin/bash
+# Commit message validation hook
+
+npx --no-install commitlint --edit "$1"

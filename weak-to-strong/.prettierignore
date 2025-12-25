@@ -1,0 +1,36 @@
+# Build outputs
+dist/
+build/
+.next/
+*.tsbuildinfo
+
+# Dependencies
+node_modules/
+.pnp.*
+
+# Environment files
+.env*
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Other
+*.min.js
+*.min.css
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
