@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import {
   Card,
   CardContent,
@@ -23,9 +24,49 @@ import {
 import { tracks, webTrack } from "@/lib/data/challenges";
 import { Challenge, Track } from "@/lib/types/challenge";
 
+interface ApiChallenge {
+  id: string;
+  title: string;
+  description: string;
+  difficulty: string;
+  points: number;
+  estimated_time_minutes: number;
+}
+
 export default function ChallengesPage() {
+  const { data: session, status } = useSession();
   const [selectedTrack, setSelectedTrack] = useState<Track>(webTrack);
+  const [apiChallenges, setApiChallenges] = useState<ApiChallenge[]>([]);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/auth/signin");
+      return;
+    }
+
+    if (session) {
+      fetchChallenges();
+    }
+  }, [session, status, router]);
+
+  const fetchChallenges = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/challenges`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setApiChallenges(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch challenges:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getDifficultyColor = (difficulty: Challenge["difficulty"]) => {
     switch (difficulty) {
@@ -44,6 +85,18 @@ export default function ChallengesPage() {
     router.push(`/dashboard?challenge=${challengeId}`);
   };
 
+  if (status === "loading" || loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
@@ -57,7 +110,64 @@ export default function ChallengesPage() {
             from local models to Claude Sonnet by proving your capability with
             weaker models first.
           </p>
+          <div className="mt-4 text-sm text-green-600">
+            Welcome back, {session.user.name}! ({session.user.tier} tier)
+          </div>
         </div>
+
+        {/* Live Challenges from API */}
+        {apiChallenges.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">
+              🔴 Live Challenges (MVP)
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {apiChallenges.map((challenge) => (
+                <Card
+                  key={challenge.id}
+                  className="hover:shadow-md transition-shadow"
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <Badge
+                        variant="outline"
+                        className="bg-green-100 text-green-700 border-green-300"
+                      >
+                        {challenge.difficulty}
+                      </Badge>
+                      <Badge variant="secondary">{challenge.points} pts</Badge>
+                    </div>
+                    <CardTitle className="text-lg">{challenge.title}</CardTitle>
+                    <CardDescription className="line-clamp-2">
+                      {challenge.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center gap-4 text-sm text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <Clock size={14} />
+                        <span>{challenge.estimated_time_minutes}m</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Target size={14} />
+                        <span>API Live</span>
+                      </div>
+                    </div>
+                    <Button
+                      className="w-full"
+                      onClick={() =>
+                        router.push(`/challenge?id=${challenge.id}`)
+                      }
+                    >
+                      <ArrowRight className="w-4 h-4 mr-2" />
+                      Start Live Challenge
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Track Selection */}
         <div className="mb-8">

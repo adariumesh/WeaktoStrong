@@ -31,6 +31,22 @@ export interface TestResult {
   timestamp: string;
 }
 
+// New unified execution result format from backend
+export interface ExecutionResult {
+  challenge_id: string;
+  user_id: string;
+  track_type: string; // "web", "data", "cloud"
+  success: boolean;
+  score: number;
+  max_score: number;
+  execution_time_ms: number;
+  output: string;
+  errors: string[];
+  test_details: Record<string, any>;
+  validation_results: Array<Record<string, any>>;
+  insights_found?: boolean; // Data analysis specific
+}
+
 export interface SubmissionRequest {
   challenge_id: string;
   code: string;
@@ -81,6 +97,34 @@ class TestRunnerAPI {
         const errorText = await response.text();
         throw new Error(
           `Test execution failed: ${response.status} ${errorText}`
+        );
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("API Error:", error);
+      throw error;
+    }
+  }
+
+  // New unified execution method for all track types
+  async executeChallenge(
+    submission: SubmissionRequest
+  ): Promise<ExecutionResult> {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/challenges/${submission.challenge_id}/execute`,
+        {
+          method: "POST",
+          headers: this.getHeaders(),
+          body: JSON.stringify(submission),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Challenge execution failed: ${response.status} ${errorText}`
         );
       }
 

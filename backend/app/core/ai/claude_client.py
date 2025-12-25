@@ -18,7 +18,7 @@ class ClaudeService:
 
     def __init__(self):
         self.client = AsyncAnthropic(
-            api_key=settings.ANTHROPIC_API_KEY, timeout=settings.AI_DEFAULT_TIMEOUT
+            api_key=settings.anthropic_api_key, timeout=settings.ai_default_timeout
         )
 
     async def health_check(self) -> bool:

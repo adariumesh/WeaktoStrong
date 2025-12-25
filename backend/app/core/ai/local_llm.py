@@ -19,9 +19,9 @@ class LocalLLMService:
 
     def __init__(self):
         self.client = ollama.AsyncClient(
-            host=settings.OLLAMA_BASE_URL, timeout=settings.AI_DEFAULT_TIMEOUT
+            host=settings.ollama_base_url, timeout=settings.ai_default_timeout
         )
-        self.model = settings.OLLAMA_MODEL
+        self.model = settings.ollama_model
 
     async def health_check(self) -> bool:
         """Check if Ollama service is healthy and model is available"""

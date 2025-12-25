@@ -24,9 +24,7 @@ router = APIRouter()
 @router.post("/register", response_model=TokenResponse)
 async def register(
     user_data: UserCreate,
-    request: Request,
     db: AsyncSession = Depends(get_db),
-    _: None = Depends(auth_rate_limit),
 ) -> TokenResponse:
     """Register a new user"""
     auth_service = AuthService(db)

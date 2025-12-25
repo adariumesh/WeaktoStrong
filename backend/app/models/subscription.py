@@ -74,8 +74,8 @@ class Subscription(Base):
     cancel_at_period_end: Mapped[bool] = mapped_column(Boolean, default=False)
     canceled_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 
-    # Metadata
-    metadata: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    # Additional data
+    subscription_metadata: Mapped[dict | None] = mapped_column(JSON, nullable=True)
 
     # Timestamps
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
@@ -151,8 +151,8 @@ class Payment(Base):
     processed_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
-    # Metadata
-    metadata: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    # Additional data
+    subscription_metadata: Mapped[dict | None] = mapped_column(JSON, nullable=True)
 
     # Relationships
     user = relationship("User", back_populates="payments")

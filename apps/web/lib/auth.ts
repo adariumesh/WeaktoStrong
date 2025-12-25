@@ -35,7 +35,7 @@ declare module "next-auth/jwt" {
 async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/refresh`,
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
       {
         method: "POST",
         headers: {
@@ -87,7 +87,7 @@ export const authOptions: AuthOptions = {
 
         try {
           const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`,
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
             {
               method: "POST",
               headers: {

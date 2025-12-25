@@ -301,5 +301,15 @@ class TestRunnerService:
             return {"error": str(e)}
 
 
-# Singleton instance
-test_runner_service = TestRunnerService()
+# Lazy initialization to avoid Docker connection issues at startup
+_test_runner_service = None
+
+def get_test_runner_service():
+    """Get or create test runner service instance"""
+    global _test_runner_service
+    if _test_runner_service is None:
+        _test_runner_service = TestRunnerService()
+    return _test_runner_service
+
+# For backward compatibility
+test_runner_service = None

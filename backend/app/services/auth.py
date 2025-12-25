@@ -40,7 +40,7 @@ class AuthService:
             email=user_data.email,
             password_hash=hashed_password,
             name=user_data.name,
-            tier=UserTier.FREE,
+            tier="free",
             tokens_used_today=0,
             is_active=True,
             is_verified=False,

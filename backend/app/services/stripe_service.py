@@ -30,7 +30,7 @@ from app.schemas.payments import (
 logger = logging.getLogger(__name__)
 
 # Initialize Stripe
-stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe.api_key = settings.stripe_secret_key
 
 
 class StripeService:

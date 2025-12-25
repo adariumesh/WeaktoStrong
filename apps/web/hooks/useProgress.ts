@@ -57,7 +57,8 @@ export function useProgress(): UseProgressReturn {
   const [error, setError] = useState<string | null>(null);
 
   // Get auth token
-  const getToken = () => localStorage.getItem("token");
+  const getToken = () =>
+    localStorage.getItem("auth_token") || localStorage.getItem("token");
 
   // Load user progress
   const loadProgress = useCallback(async () => {
@@ -65,7 +66,7 @@ export function useProgress(): UseProgressReturn {
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch("/api/v1/progress/", {
+      const response = await fetch("http://localhost:8000/progress/", {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -88,7 +89,7 @@ export function useProgress(): UseProgressReturn {
   // Load streak information
   const loadStreaks = useCallback(async () => {
     try {
-      const response = await fetch("/api/v1/progress/streaks", {
+      const response = await fetch("http://localhost:8000/progress/streaks", {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -113,11 +114,14 @@ export function useProgress(): UseProgressReturn {
         if (track) params.append("track", track);
         params.append("limit", limit.toString());
 
-        const response = await fetch(`/api/v1/progress/leaderboard?${params}`, {
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-          },
-        });
+        const response = await fetch(
+          `http://localhost:8000/progress/leaderboard?${params}`,
+          {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to load leaderboard");
@@ -138,7 +142,7 @@ export function useProgress(): UseProgressReturn {
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch("/api/v1/progress/refresh", {
+      const response = await fetch("http://localhost:8000/progress/refresh", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${getToken()}`,

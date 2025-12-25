@@ -456,14 +456,162 @@ export const webTrack: Track = {
   ),
 };
 
+// Data Analysis Track Challenges
+export const dataTrackChallenges: Challenge[] = [
+  {
+    id: "data-001",
+    trackId: "data",
+    title: "Data Analysis Fundamentals",
+    description: `Learn to analyze datasets using pandas. Extract insights from CSV data, perform basic statistics, and create visualizations. Practice WeaktoStrong methodology by starting with simple analysis before complex modeling.`,
+    difficulty: "beginner",
+    order: 1,
+    modelTier: "local",
+    points: 100,
+    estimatedTime: 30,
+    tags: ["pandas", "data-analysis", "python"],
+    requirements: [
+      {
+        id: "req1",
+        text: "Calculate total revenue from sales data",
+        points: 25,
+        completed: false,
+      },
+      {
+        id: "req2",
+        text: "Find best selling product",
+        points: 25,
+        completed: false,
+      },
+      {
+        id: "req3",
+        text: "Calculate average order value",
+        points: 25,
+        completed: false,
+      },
+      {
+        id: "req4",
+        text: "Create summary analysis",
+        points: 25,
+        completed: false,
+      },
+    ],
+    constraints: [
+      {
+        id: "con1",
+        text: "Must use pandas for data manipulation",
+        type: "technical",
+      },
+      {
+        id: "con2",
+        text: "Results must be stored in variables",
+        type: "technical",
+      },
+    ],
+    testConfig: {
+      type: "pytest",
+      timeout: 30000,
+      tests: [
+        {
+          id: "test1",
+          name: "Total Revenue",
+          description: "Checks if total_revenue variable exists",
+          assertion: "variable 'total_revenue' should exist",
+          points: 25,
+        },
+        {
+          id: "test2",
+          name: "Best Product",
+          description: "Checks if best_selling_product variable exists",
+          assertion: "variable 'best_selling_product' should exist",
+          points: 25,
+        },
+        {
+          id: "test3",
+          name: "Average Order",
+          description: "Checks if avg_order_value variable exists",
+          assertion: "variable 'avg_order_value' should exist",
+          points: 25,
+        },
+        {
+          id: "test4",
+          name: "Summary Data",
+          description: "Checks if result_summary variable exists",
+          assertion: "variable 'result_summary' should exist",
+          points: 25,
+        },
+      ],
+    },
+    hints: [
+      {
+        id: "hint1",
+        level: 1,
+        text: "The dataset 'df' is already loaded for you. Use df['column_name'] to access columns.",
+      },
+      {
+        id: "hint2",
+        level: 2,
+        text: "Calculate revenue by multiplying quantity and price columns: df['revenue'] = df['quantity'] * df['price']",
+      },
+      {
+        id: "hint3",
+        level: 3,
+        text: "Use df.groupby('product_name')['quantity'].sum() to find product sales, then .idxmax() to get the best seller.",
+      },
+    ],
+    isRedTeam: false,
+    starterCode: `# WeaktoStrong Data Analysis Challenge 1: Fundamentals\n\n# The dataset 'df' is already loaded for you\n# Columns: product_name, quantity, price, sale_date\n\n# TODO 1: Calculate total revenue\n# Hint: revenue = quantity * price\n\n# TODO 2: Find the product with highest total sales\n# Hint: Group by product_name and sum quantities  \n\n# TODO 3: Calculate average order value\n\n# TODO 4: Create a summary with your findings\n\nprint("Analysis complete!")`,
+    resources: [
+      {
+        id: "res1",
+        type: "documentation",
+        title: "Pandas Documentation",
+        description: "Official pandas library documentation",
+        url: "https://pandas.pydata.org/docs/",
+      },
+      {
+        id: "res2",
+        type: "documentation",
+        title: "Data Analysis with Python",
+        description: "Guide to data analysis techniques",
+        url: "https://www.python.org/about/success/dabeaz/",
+      },
+    ],
+  },
+];
+
+// Data Analysis Track
+export const dataTrack: Track = {
+  id: "data",
+  name: "Data Analysis",
+  description:
+    "Master data analysis with Python, pandas, and machine learning. Build insights from real datasets using WeaktoStrong methodology.",
+  icon: "📊",
+  color: "green",
+  order: 2,
+  challenges: dataTrackChallenges,
+  totalChallenges: dataTrackChallenges.length,
+  totalPoints: dataTrackChallenges.reduce(
+    (sum, challenge) => sum + challenge.points,
+    0
+  ),
+};
+
 // All tracks
-export const tracks: Track[] = [webTrack];
+export const tracks: Track[] = [webTrack, dataTrack];
 
 // Helper functions
 export function getChallengeById(challengeId: string): Challenge | undefined {
   for (const track of tracks) {
     const challenge = track.challenges.find((c) => c.id === challengeId);
     if (challenge) return challenge;
+  }
+  return undefined;
+}
+
+export function getTrackByChallenge(challengeId: string): Track | undefined {
+  for (const track of tracks) {
+    const challenge = track.challenges.find((c) => c.id === challengeId);
+    if (challenge) return track;
   }
   return undefined;
 }

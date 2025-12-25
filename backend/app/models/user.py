@@ -18,6 +18,9 @@ class UserTier(str, Enum):
     PRO = "pro"
     TEAM = "team"
     ENTERPRISE = "enterprise"
+    
+    def __str__(self):
+        return self.value
 
 
 class User(Base):
@@ -38,10 +41,8 @@ class User(Base):
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     avatar_url: Mapped[str] = mapped_column(Text, nullable=True)
 
-    # Subscription & usage
-    tier: Mapped[UserTier] = mapped_column(
-        ENUM(UserTier, name="user_tier"), default=UserTier.FREE, nullable=False
-    )
+    # Subscription & usage (temporarily using string for MVP)
+    tier: Mapped[str] = mapped_column(String(20), default="free", nullable=False)
     tokens_used_today: Mapped[int] = mapped_column(Integer, default=0)
 
     # OAuth fields
@@ -95,12 +96,12 @@ class User(Base):
     )
 
     def __repr__(self) -> str:
-        return f"<User(id={self.id}, email='{self.email}', tier='{self.tier.value}')>"
+        return f"<User(id={self.id}, email='{self.email}', tier='{self.tier}')>"
 
     @property
     def subscription_tier(self) -> str:
         """Get subscription tier as string for AI routing"""
-        return self.tier.value
+        return self.tier
 
     async def get_daily_token_usage(self, db_session, target_date=None) -> dict:
         """Get AI token usage for a specific date"""

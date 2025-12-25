@@ -3,6 +3,7 @@ Pydantic schemas for payment and subscription endpoints
 """
 
 from datetime import datetime
+from typing import Any
 from uuid import UUID
 
 from pydantic import BaseModel, Field
@@ -149,7 +150,7 @@ class TierFeatures(BaseModel):
     """Features for each tier"""
 
     tier: UserTier
-    features: dict[str, any]
+    features: dict[str, Any]
 
 
 TIER_FEATURES = {

@@ -23,6 +23,26 @@ from sqlalchemy.sql import func
 from .user import Base
 
 
+class Track(Base):
+    """Track model - learning tracks like Web, Data, Cloud"""
+    
+    __tablename__ = "tracks"
+    
+    id = Column(
+        UUID(as_uuid=True), primary_key=True, server_default=func.gen_random_uuid()
+    )
+    name = Column(String(100), nullable=False)
+    description = Column(Text, nullable=True)
+    order_index = Column(Integer, nullable=False)
+    is_active = Column(Boolean, default=True, nullable=True)
+    created_at = Column(
+        DateTime(timezone=True), server_default=func.now(), nullable=True
+    )
+    
+    # Relationships
+    challenges = relationship("Challenge", back_populates="track")
+
+
 class ChallengeTrack(str, Enum):
     """Available challenge tracks"""
 
@@ -58,15 +78,12 @@ class Challenge(Base):
         UUID(as_uuid=True), primary_key=True, server_default=func.gen_random_uuid()
     )
 
-    # Challenge metadata
-    slug = Column(
-        String(100), unique=True, nullable=False
-    )  # e.g. "web-001-html-basics"
+    # Challenge metadata  
     title = Column(String(200), nullable=False)
     description = Column(Text, nullable=False)
 
-    # Classification
-    track = Column(String(20), nullable=False)  # web, data, cloud
+    # Classification  
+    track_id = Column(UUID(as_uuid=True), ForeignKey("tracks.id"), nullable=False)
     difficulty = Column(String(20), nullable=False)  # beginner, intermediate, advanced
     order_index = Column(Integer, nullable=False)  # Position in track
 
@@ -74,30 +91,26 @@ class Challenge(Base):
     requirements = Column(JSON, nullable=True)  # List of requirement strings
     constraints = Column(JSON, nullable=True)  # List of constraint strings
     test_config = Column(JSON, nullable=True)  # Test configuration
+    validation_rules = Column(JSON, nullable=True)  # Data analysis validation rules
 
     # Points and progress
     points = Column(Integer, default=100, nullable=False)
-    estimated_time = Column(Integer, nullable=True)  # Minutes
+    estimated_time_minutes = Column(Integer, nullable=True)  # Minutes
+    
+    # Model and red team settings
+    model_tier = Column(String(20), nullable=False, default="local")  # local, haiku, sonnet
+    is_red_team = Column(Boolean, default=False, nullable=True)
 
     # Content
-    starter_code = Column(Text, nullable=True)
-    solution_code = Column(Text, nullable=True)  # Hidden from users
     hints = Column(JSON, nullable=True)  # List of hint strings
-    resources = Column(JSON, nullable=True)  # Links and references
 
-    # Status
-    is_active = Column(Boolean, default=True, nullable=False)
+    # Status  
     created_at = Column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False
-    )
-    updated_at = Column(
-        DateTime(timezone=True),
-        server_default=func.now(),
-        onupdate=func.now(),
-        nullable=False,
+        DateTime(timezone=True), server_default=func.now(), nullable=True
     )
 
     # Relationships
+    track = relationship("Track", back_populates="challenges")
     submissions = relationship(
         "Submission", back_populates="challenge", cascade="all, delete-orphan"
     )

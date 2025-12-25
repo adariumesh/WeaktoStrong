@@ -1,7 +1,7 @@
 """Add subscription and payment models
 
-Revision ID: add_subscription_payment_models
-Revises: last_revision
+Revision ID: 004
+Revises: 003
 Create Date: 2024-12-22 08:47:00.000000
 
 """
@@ -12,8 +12,8 @@ from sqlalchemy.dialects.postgresql import UUID
 
 
 # revision identifiers
-revision = "add_subscription_payment_models"
-down_revision = "c5a2f1e8d3b4"  # Update with actual last revision
+revision = "004"
+down_revision = "003"
 branch_labels = None
 depends_on = None
 
@@ -61,7 +61,7 @@ def upgrade() -> None:
         sa.Column("currency", sa.String(length=3), nullable=False, default="usd"),
         sa.Column("cancel_at_period_end", sa.Boolean(), nullable=True, default=False),
         sa.Column("canceled_at", sa.DateTime(), nullable=True),
-        sa.Column("metadata", sa.JSON(), nullable=True),
+        sa.Column("subscription_metadata", sa.JSON(), nullable=True),
         sa.Column("created_at", sa.DateTime(), nullable=True, default=sa.text("now()")),
         sa.Column("updated_at", sa.DateTime(), nullable=True, default=sa.text("now()")),
         sa.ForeignKeyConstraint(
@@ -101,7 +101,7 @@ def upgrade() -> None:
         sa.Column("last4", sa.String(length=4), nullable=True),
         sa.Column("processed_at", sa.DateTime(), nullable=False),
         sa.Column("created_at", sa.DateTime(), nullable=True, default=sa.text("now()")),
-        sa.Column("metadata", sa.JSON(), nullable=True),
+        sa.Column("subscription_metadata", sa.JSON(), nullable=True),
         sa.ForeignKeyConstraint(
             ["subscription_id"],
             ["subscriptions.id"],

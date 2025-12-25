@@ -107,7 +107,7 @@ CREATE INDEX idx_conversations_user ON conversations(user_id);
 -- Insert initial tracks
 INSERT INTO tracks (id, name, description, order_index) VALUES
 ('a1b2c3d4-e5f6-7890-abcd-123456789abc', 'Web Development', 'Frontend development challenges using HTML, CSS, JavaScript, and React', 1),
-('b2c3d4e5-f6g7-8901-bcde-23456789abcd', 'Data Analysis', 'Data manipulation and analysis using Python, pandas, and SQL', 2),
-('c3d4e5f6-g7h8-9012-cdef-3456789abcde', 'Cloud Infrastructure', 'AWS services, containerization, and deployment challenges', 3);
+('b2c3d4e5-f607-8901-bcde-23456789abcd', 'Data Analysis', 'Data manipulation and analysis using Python, pandas, and SQL', 2),
+('c3d4e5f6-0708-9012-cdef-3456789abcde', 'Cloud Infrastructure', 'AWS services, containerization, and deployment challenges', 3);
 
 COMMENT ON DATABASE weaktostrong IS 'Weak-to-Strong AI training platform database';

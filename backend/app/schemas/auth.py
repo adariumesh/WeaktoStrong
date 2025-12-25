@@ -4,8 +4,9 @@ Pydantic schemas for authentication
 
 import uuid
 from datetime import datetime
+from typing import Annotated
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 from app.models.user import UserTier
 
@@ -13,16 +14,44 @@ from app.models.user import UserTier
 class UserCreate(BaseModel):
     """Schema for user registration"""
 
-    email: EmailStr
+    email: str = Field(..., description="Email address")
     password: str = Field(..., min_length=8, max_length=128)
     name: str = Field(..., min_length=1, max_length=255)
+
+    @field_validator('email')
+    @classmethod
+    def validate_email(cls, v):
+        """Custom email validation that allows .local domains for testing"""
+        import re
+        
+        # Basic email pattern that allows .local domains
+        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(pattern, v):
+            raise ValueError('Invalid email format')
+        
+        # Convert to lowercase for consistency
+        return v.lower()
 
 
 class UserLogin(BaseModel):
     """Schema for user login"""
 
-    email: EmailStr
+    email: str = Field(..., description="Email address")
     password: str
+
+    @field_validator('email')
+    @classmethod
+    def validate_email(cls, v):
+        """Custom email validation that allows .local domains for testing"""
+        import re
+        
+        # Basic email pattern that allows .local domains
+        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(pattern, v):
+            raise ValueError('Invalid email format')
+        
+        # Convert to lowercase for consistency
+        return v.lower()
 
 
 class UserResponse(BaseModel):
@@ -32,7 +61,7 @@ class UserResponse(BaseModel):
     email: str
     name: str
     avatar_url: str | None = None
-    tier: UserTier
+    tier: str
     tokens_used_today: int
     is_active: bool
     is_verified: bool
