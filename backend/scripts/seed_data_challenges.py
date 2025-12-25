@@ -5,8 +5,9 @@ Creates 15 data science challenges with real datasets and comprehensive test con
 
 import asyncio
 
+from sqlalchemy import select
 from app.core.database import get_db
-from app.models.challenge import Challenge, ChallengeDifficulty, ChallengeTrack
+from app.models.challenge import Challenge, ChallengeDifficulty, ChallengeTrack, Track
 
 DATA_CHALLENGES = [
     # BEGINNER: Data Cleaning (1-5)
@@ -1086,25 +1087,30 @@ async def seed_data_challenges():
             for challenge_data in DATA_CHALLENGES:
                 # Check if challenge already exists
                 existing = await db.execute(
-                    select(Challenge).where(Challenge.slug == challenge_data["slug"])
+                    select(Challenge).where(Challenge.title == challenge_data["title"])
                 )
                 if existing.scalar_one_or_none():
                     print(
-                        f"Challenge {challenge_data['slug']} already exists, skipping..."
+                        f"Challenge {challenge_data['title']} already exists, skipping..."
                     )
                     continue
 
+                # Get data track ID
+                track_result = await db.execute(
+                    select(Track).where(Track.name == "Data Analysis")
+                )
+                track = track_result.scalar_one()
+
                 # Create challenge
                 challenge = Challenge(
-                    slug=challenge_data["slug"],
                     title=challenge_data["title"],
                     description=challenge_data["description"],
-                    difficulty=challenge_data["difficulty"],
-                    track=challenge_data["track"],
+                    track_id=track.id,
+                    difficulty=challenge_data["difficulty"].value,
                     order_index=challenge_data["order_index"],
                     points=challenge_data["points"],
                     model_tier=challenge_data["model_tier"],
-                    estimated_time=challenge_data["estimated_time"],
+                    estimated_time_minutes=30,  # Default for now
                     requirements=challenge_data["requirements"],
                     constraints=challenge_data["constraints"],
                     test_config=challenge_data["test_config"],

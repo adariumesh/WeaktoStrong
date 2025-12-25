@@ -1,3 +1,6 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +16,61 @@ interface ChallengePanelProps {
 export function ChallengePanel({
   challengeId = "web-001",
 }: ChallengePanelProps) {
-  const challenge = getChallengeById(challengeId);
+  const [challenge, setChallenge] = useState<Challenge | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchChallenge = async () => {
+      try {
+        // First try to fetch from API
+        const response = await fetch(`http://localhost:8000/challenges/${challengeId}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (!data.error) {
+            // Convert backend format to frontend format
+            setChallenge({
+              id: data.id,
+              title: data.title,
+              description: data.description,
+              difficulty: data.difficulty as Challenge['difficulty'],
+              track: data.track,
+              points: data.points,
+              estimatedTime: `${data.estimated_time_minutes} minutes`,
+              modelTier: data.model_tier || 'local',
+              requirements: data.requirements || [],
+              constraints: data.constraints || [],
+              hints: data.hints || [],
+              starterCode: '',
+              solution: '',
+              tags: []
+            });
+            setLoading(false);
+            return;
+          }
+        }
+        
+        // Fallback to static data if API fails
+        const staticChallenge = getChallengeById(challengeId);
+        setChallenge(staticChallenge);
+      } catch (error) {
+        // Fallback to static data on error
+        const staticChallenge = getChallengeById(challengeId);
+        setChallenge(staticChallenge);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChallenge();
+  }, [challengeId]);
+
+  if (loading) {
+    return (
+      <div className="p-4 text-center">
+        <p className="text-muted-foreground">Loading challenge...</p>
+      </div>
+    );
+  }
 
   if (!challenge) {
     return (
@@ -86,8 +143,10 @@ export function ChallengePanel({
             <div className="flex items-center gap-1">
               <Target size={14} />
               <span>
-                {challenge.modelTier.charAt(0).toUpperCase() +
-                  challenge.modelTier.slice(1)}{" "}
+                {challenge.modelTier ? 
+                  challenge.modelTier.charAt(0).toUpperCase() + challenge.modelTier.slice(1) : 
+                  'Local'
+                }{" "}
                 AI
               </span>
             </div>

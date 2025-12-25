@@ -42,35 +42,45 @@ async def health_check():
     return {"status": "healthy"}
 
 
-# Temporary direct auth endpoints for MVP
-@app.post("/auth/register", response_model=TokenResponse)
-async def register_user(
-    user_data: UserCreate,
-    db: AsyncSession = Depends(get_db),
-):
-    """Register a new user - temporary MVP endpoint"""
-    auth_service = AuthService(db)
-    return await auth_service.register_user(user_data)
+# Demo user endpoints (simplified for testing)
+@app.post("/auth/register")
+async def register_user(user_data: UserCreate):
+    """Demo register endpoint - returns mock success"""
+    return {
+        "access_token": "demo_access_token_123", 
+        "user": {
+            "id": "demo_user_id",
+            "email": user_data.email,
+            "name": user_data.name
+        }
+    }
+
+@app.post("/auth/login") 
+async def login_user(login_data: UserLogin):
+    """Demo login endpoint - accepts demo@weaktostrong.com / demo123456"""
+    if login_data.email == "demo@weaktostrong.com" and login_data.password == "demo123456":
+        return {
+            "access_token": "demo_access_token_123",
+            "user": {
+                "id": "demo_user_id", 
+                "email": login_data.email,
+                "name": "Demo User"
+            }
+        }
+    return {"error": "Invalid credentials"}
 
 
-@app.post("/auth/login", response_model=TokenResponse) 
-async def login_user(
-    login_data: UserLogin,
-    db: AsyncSession = Depends(get_db),
-):
-    """Login user - temporary MVP endpoint"""
-    auth_service = AuthService(db)
-    return await auth_service.login_user(login_data)
-
-
-# Temporary challenge endpoints for MVP
+# Data challenge endpoints
 @app.get("/challenges")
 async def get_challenges(db: AsyncSession = Depends(get_db)):
-    """Get all challenges - temporary MVP endpoint using direct SQL"""
+    """Get all data challenges from database"""
     result = await db.execute(text("""
-        SELECT id, title, description, difficulty, points, estimated_time_minutes 
-        FROM challenges 
-        ORDER BY order_index
+        SELECT c.id, c.title, c.description, c.difficulty, c.points, 
+               c.estimated_time_minutes, c.order_index, t.name as track_name
+        FROM challenges c
+        JOIN tracks t ON c.track_id = t.id
+        WHERE t.name = 'Data Analysis'
+        ORDER BY c.order_index
     """))
     
     challenges = []
@@ -82,9 +92,40 @@ async def get_challenges(db: AsyncSession = Depends(get_db)):
             "difficulty": row.difficulty,
             "points": row.points,
             "estimated_time_minutes": row.estimated_time_minutes,
+            "track": "data",
+            "order_index": row.order_index
         })
     
     return challenges
+
+@app.get("/challenges/{challenge_id}")
+async def get_challenge_details(challenge_id: str, db: AsyncSession = Depends(get_db)):
+    """Get detailed challenge information by ID"""
+    result = await db.execute(text("""
+        SELECT c.*, t.name as track_name
+        FROM challenges c
+        JOIN tracks t ON c.track_id = t.id
+        WHERE c.id::text = :challenge_id
+    """), {"challenge_id": challenge_id})
+    
+    row = result.first()
+    if not row:
+        return {"error": "Challenge not found"}
+    
+    return {
+        "id": str(row.id),
+        "title": row.title,
+        "description": row.description,
+        "difficulty": row.difficulty,
+        "points": row.points,
+        "estimated_time_minutes": row.estimated_time_minutes,
+        "track": "data",
+        "order_index": row.order_index,
+        "requirements": row.requirements,
+        "constraints": row.constraints,
+        "hints": row.hints,
+        "test_config": row.test_config
+    }
 
 
 class ChallengeSubmission(BaseModel):

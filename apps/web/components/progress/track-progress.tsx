@@ -82,7 +82,7 @@ export function TrackProgress({ trackName, trackData }: TrackProgressProps) {
           </div>
 
           <Badge className={`${trackColor} text-white`}>
-            {percentage.toFixed(0)}%
+            {(percentage || 0).toFixed(0)}%
           </Badge>
         </div>
 
@@ -94,7 +94,7 @@ export function TrackProgress({ trackName, trackData }: TrackProgressProps) {
               {completed}/{total}
             </span>
           </div>
-          <Progress value={percentage} className="h-3" />
+          <Progress value={percentage || 0} className="h-3" />
         </div>
 
         {/* Stats */}

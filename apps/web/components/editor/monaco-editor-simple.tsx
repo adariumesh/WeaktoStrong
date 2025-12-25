@@ -56,26 +56,26 @@ export function MonacoEditor({
   };
 
   return (
-    <div className="flex flex-col h-full bg-white border border-gray-200 rounded-lg overflow-hidden">
+    <div className="flex flex-col h-full bg-white border border-gray-200 rounded-lg overflow-hidden min-h-0 min-w-0">
       {/* Editor Toolbar */}
-      <div className="flex items-center justify-between px-3 py-2 bg-gray-50 border-b border-gray-200">
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-medium text-gray-700">{fileName}</span>
-          <span className="text-xs text-gray-500">
+      <div className="flex items-center justify-between px-3 py-2 bg-gray-50 border-b border-gray-200 flex-shrink-0 min-w-0">
+        <div className="flex items-center gap-2 min-w-0 flex-shrink">
+          <span className="text-sm font-medium text-gray-700 truncate">{fileName}</span>
+          <span className="text-xs text-gray-500 flex-shrink-0">
             {language.toUpperCase()}
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 flex-shrink-0">
           <Button
             size="sm"
             variant="ghost"
             onClick={downloadCode}
-            className="h-7 px-2"
+            className="h-7 px-1"
             title="Download Code"
             aria-label="Download code as file"
           >
-            <Download size={14} />
+            <Download size={12} />
           </Button>
 
           {onReset && (
@@ -83,11 +83,11 @@ export function MonacoEditor({
               size="sm"
               variant="outline"
               onClick={onReset}
-              className="h-7 px-2"
+              className="h-7 px-1"
               title="Reset Code"
               aria-label="Reset code to initial state"
             >
-              <RotateCcw size={14} />
+              <RotateCcw size={12} />
             </Button>
           )}
 
@@ -95,21 +95,23 @@ export function MonacoEditor({
             <Button
               size="sm"
               onClick={onRun}
-              className="h-7 px-3 bg-green-600 hover:bg-green-700"
+              className="h-7 px-2 bg-green-600 hover:bg-green-700"
               title="Run Tests"
               aria-label="Execute tests for this code"
             >
-              <Play size={14} className="mr-1" />
-              Run Tests
+              <Play size={12} className="mr-1" />
+              <span className="hidden sm:inline">Run Tests</span>
+              <span className="sm:hidden">Run</span>
             </Button>
           )}
         </div>
       </div>
 
       {/* Monaco Editor */}
-      <div className="flex-1">
+      <div className="flex-1 min-h-0 overflow-hidden">
         <Editor
-          height={height}
+          height="100%"
+          width="100%"
           defaultLanguage={language}
           language={language}
           value={value}
@@ -145,7 +147,7 @@ export function MonacoEditor({
       </div>
 
       {/* Status Bar */}
-      <div className="flex items-center justify-between px-3 py-1 bg-gray-50 border-t border-gray-200 text-xs text-gray-600">
+      <div className="flex items-center justify-between px-3 py-1 bg-gray-50 border-t border-gray-200 text-xs text-gray-600 flex-shrink-0">
         <div className="flex items-center gap-4">
           <span>Lines: {value.split("\n").length}</span>
           <span>Characters: {value.length}</span>

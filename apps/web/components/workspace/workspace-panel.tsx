@@ -114,40 +114,42 @@ export function WorkspacePanel({
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col min-h-0 min-w-0 overflow-hidden">
       {/* Tabs */}
-      <Tabs defaultValue="editor" className="flex-1 flex flex-col">
-        <TabsList className="grid w-full grid-cols-4 rounded-none bg-muted/30">
-          <TabsTrigger value="editor" className="flex items-center gap-2">
+      <Tabs defaultValue="editor" className="flex-1 flex flex-col min-h-0 min-w-0">
+        <TabsList className="grid w-full grid-cols-4 rounded-none bg-muted/30 flex-shrink-0 min-w-0">
+          <TabsTrigger value="editor" className="flex items-center gap-1 text-xs px-2">
             <Code className="w-4 h-4" />
             Code Editor
           </TabsTrigger>
-          <TabsTrigger value="preview" className="flex items-center gap-2">
+          <TabsTrigger value="preview" className="flex items-center gap-1 text-xs px-2">
             <Eye className="w-4 h-4" />
             Live Preview
           </TabsTrigger>
-          <TabsTrigger value="results" className="flex items-center gap-2">
+          <TabsTrigger value="results" className="flex items-center gap-1 text-xs px-2">
             <Play className="w-4 h-4" />
             Test Results
           </TabsTrigger>
-          <TabsTrigger value="terminal" className="flex items-center gap-2">
+          <TabsTrigger value="terminal" className="flex items-center gap-1 text-xs px-2">
             <Terminal className="w-4 h-4" />
             Terminal
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="editor" className="flex-1 mt-0">
-          <MonacoEditor
-            value={code}
-            onChange={setCode}
-            language={getLanguageForTrack()}
-            fileName={getFileName()}
-            onRun={handleRunTests}
-            onReset={handleResetCode}
-          />
+        <TabsContent value="editor" className="flex-1 mt-0 min-h-0 min-w-0 overflow-hidden">
+          <div className="h-full min-h-0 min-w-0">
+            <MonacoEditor
+              value={code}
+              onChange={setCode}
+              language={getLanguageForTrack()}
+              fileName={getFileName()}
+              onRun={handleRunTests}
+              onReset={handleResetCode}
+            />
+          </div>
         </TabsContent>
 
-        <TabsContent value="preview" className="flex-1 mt-0">
+        <TabsContent value="preview" className="flex-1 mt-0 min-h-0 min-w-0 overflow-hidden">
           {track?.id === "web" ? (
             <LivePreview code={code} title="Challenge Preview" />
           ) : (
@@ -166,7 +168,7 @@ export function WorkspacePanel({
           )}
         </TabsContent>
 
-        <TabsContent value="results" className="flex-1 mt-0">
+        <TabsContent value="results" className="flex-1 mt-0 min-h-0 min-w-0 overflow-hidden">
           <div className="h-full p-4 overflow-auto">
             {testError ? (
               <div className="text-center py-8">
@@ -270,7 +272,7 @@ export function WorkspacePanel({
           </div>
         </TabsContent>
 
-        <TabsContent value="terminal" className="flex-1 mt-0">
+        <TabsContent value="terminal" className="flex-1 mt-0 min-h-0 min-w-0 overflow-hidden">
           <TerminalComponent
             onRunTests={handleRunTests}
             isRunning={isTestRunning}
